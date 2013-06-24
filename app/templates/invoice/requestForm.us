@@ -1,0 +1,42 @@
+<div class="hello hero-unit">
+	<form class="form-horizontal">
+		<fieldset>
+			<legend>Request Invoice</legened>
+			<div class="control-group">
+				<label class="control-label" for="apiKey">API KEY</label>
+				<div class="controls">
+					<input type="text" name="apiKey" placeholder="API KEY"/>
+				</div>
+			</div>
+			<div class="control-group">
+			    <label class="control-label" for="togglrName">Name</label>
+			    <div class="controls">
+			        <input type="text" name="togglrName" placeholder="E.g. Jon Doe" />
+			    </div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="startDate">Start Date</label>
+				<div class="controls">
+					<input type="text" name="startDate" placeholder="DD-MM-YYYY" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="endDate">End Date</label>
+				<div class="controls">
+					<input type="text" name="endDate" placeholder="DD-MM-YYYY" />
+				</div>
+			</div>
+			<div class="control-group">
+			    <label class="control-label" for="hourlyRate">Hourly Rate</label>
+			    <div class="controls">
+			        <input type="text" name="hourlyRate" placeholder="E.g. 50" />
+			    </div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<button class="btn" id="submit">Submit</button>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+</div>

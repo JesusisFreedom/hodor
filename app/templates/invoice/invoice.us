@@ -1,0 +1,29 @@
+<div>
+    <fieldset>
+        <legend><h1>Invoice</h1></legend>
+        <div class='row-fluid'>
+            <div class='span3'><strong>Name</strong></div>
+            <div class='span6'>${name}</div>
+        </div>
+        <div class='row-fluid'>
+            <div class='span3'><strong>Start Date</strong></div>
+            <div class='span6'>${printableStartDate}</div>
+        </div>
+        <div class='row-fluid'>
+            <div class='span3'><strong>End Date</strong></div>
+            <div class='span6'>${printableEndDate}</div>
+        </div>
+        <div class='row-fluid'>
+            <div class='span3'><strong>Total Billable Time</strong></div>
+            <div class='span6'>${totalTime}</div>
+        </div>
+        <div class='row-fluid'>
+            <div class='span3'><strong>Hourly Rate USD</strong></div>
+            <div class='span6'>${hourlyRate}</div>
+        </div>
+        <div class='row-fluid'>
+            <div class='span3'><strong>Billable Amount USD</strong></div>
+            <div class='span6'>${billableAmount}</div>
+        </div>
+    </fieldset>
+</div>
