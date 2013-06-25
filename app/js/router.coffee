@@ -9,10 +9,8 @@
 
 	API =
 		index: ->
-			console.log "in index.."
 			new App.InvoiceRequest.Form.Controller
 
 	Router.on 'start', ->
-  	console.log "starting router.."
 		new Router.AppRouter
 			controller: API

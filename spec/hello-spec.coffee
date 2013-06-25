@@ -48,3 +48,19 @@ describe "backbone models", ->
     And -> @timeEntrySummary = new Hodor.InvoiceRequest.Form.Models.TimeEntrySummary {hourlyRate: 25, totalTime: @timeEntries.sumOfDurations()}
     And -> @timeEntrySummary.setBillableAmount()
     Then -> expect(@timeEntrySummary.get('billableAmount')).toEqual(50)
+
+describe "validates a field is not empty", ->
+  Given -> Backbone.history.stop()
+  And -> Hodor.start()
+
+  describe "should return false if value is not present", ->
+    When -> @isPresent = ValueValidator.isPresent("")
+    Then -> expect(@isPresent).toEqual(false)
+
+  describe "should return false if value is null", ->
+    When -> @isPresent = ValueValidator.isPresent(null)
+    Then -> expect(@isPresent).toEqual(false)
+
+  describe "should return true if a value is not empty nor null", ->
+    When -> @isPresent = ValueValidator.isPresent("something")
+    Then -> expect(@isPresent).toEqual(true)
