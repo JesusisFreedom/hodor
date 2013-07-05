@@ -7,7 +7,7 @@
       'submit form': 'submitRequest'
 
     initialize: ->
-      console.log "initializing request form"
+      @errors = []
 
     submitRequest: (domEvent)->
       domEvent.preventDefault()
@@ -18,7 +18,12 @@
         name:     form.find("input[name='togglrName']").val()
       dates = {startDate:	@getStartDate(form), endDate: @getEndDate(form)}
       hourlyRate = form.find("input[name='hourlyRate']").val()
-      @getFromToggl credentials, dates, hourlyRate
+      if ValueValidator.isPresent(credentials.apiKey)
+        console.log "API KEY is PRESENT"
+        @getFromToggl credentials, dates, hourlyRate
+      else
+        console.log " API KEY is NOT PRESENT"
+        @errors['apiKey'] = 'Please provide your API Key!'
 
     getStartDate: (form) ->
       form.find("input[name='startDate']").val()
