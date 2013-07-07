@@ -8,22 +8,24 @@
 
     initialize: ->
       @errors = []
+      @API_KEY_INPUT = "input[name='apiKey']"
 
     submitRequest: (domEvent)->
       domEvent.preventDefault()
       form = $(domEvent.currentTarget)
       credentials =
-        apiKey: 	form.find("input[name='apiKey']").val(),
+        apiKey: 	form.find(@API_KEY_INPUT).val(),
         password:	form.find("input[name='password']").val(),
         name:     form.find("input[name='togglrName']").val()
       dates = {startDate:	@getStartDate(form), endDate: @getEndDate(form)}
       hourlyRate = form.find("input[name='hourlyRate']").val()
       if ValueValidator.isPresent(credentials.apiKey)
-        console.log "API KEY is PRESENT"
         @getFromToggl credentials, dates, hourlyRate
       else
-        console.log " API KEY is NOT PRESENT"
-        @errors['apiKey'] = 'Please provide your API Key!'
+        console.warn " API KEY is NOT PRESENT"
+        @errors.push {name: 'Please provide your API Key!'}
+        errorMessages = new App.AlertMessages.Models.Messages(@errors)
+        App.execute "messages:display", errorMessages
 
     getStartDate: (form) ->
       form.find("input[name='startDate']").val()

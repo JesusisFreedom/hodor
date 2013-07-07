@@ -1,7 +1,9 @@
 <div class="hello hero-unit">
-	<form class="form-horizontal">
+	<form class="form-horizontal" id="invoice-request-form">
 		<fieldset>
-			<legend>Request Invoice</legened>
+			<legend>
+                Request Invoice
+            </legend>
 			<div class="control-group">
 				<label class="control-label" for="apiKey">API KEY</label>
 				<div class="controls">

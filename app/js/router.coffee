@@ -9,7 +9,9 @@
 
 	API =
 		index: ->
-			new App.InvoiceRequest.Form.Controller
+      new App.InvoiceRequest.Form.Controller()
+      new App.AlertMessages.Controller
+        region: App.messagesRegion
 
 	Router.on 'start', ->
 		new Router.AppRouter
