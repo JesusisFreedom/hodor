@@ -17,6 +17,8 @@
       @API_KEY_ERROR_MESSAGE = 'Please provide your API Key!'
       @NAME_ERROR_MESSAGE = 'Please provide a name!'
       @HOURLY_RATE_ERROR_MESSAGE = 'Please provide an hourly rate!'
+      @START_DATE_ERROR_MESSAGE = 'Please provide a start date!'
+      @END_DATE_ERROR_MESSAGE = 'Please provide an end date!'
 
     submitRequest: (domEvent)->
       domEvent.preventDefault()
@@ -24,7 +26,7 @@
       credentials = @_getCredentials(form)
       dates = @_getDates(form)
       hourlyRate = form.find(@HOURLY_RATE_INPUT).val()
-      @validateForm credentials
+      @validateForm credentials, hourlyRate, dates
       if _.isEmpty(@errors)
         @getFromToggl credentials, dates, hourlyRate
       else
@@ -54,11 +56,12 @@
         hourlyRate: hourlyRate
       App.execute "timeEntries:requestData", options
 
-    validateForm: (credentials, hourlyRate) ->
+    validateForm: (credentials, hourlyRate, dates) ->
       @errors = []
       @validateApiKey credentials.apiKey
       @validateName credentials.name
       @validateHourlyRate hourlyRate
+      @validateStartDate dates.startDate
 
     validateName: (name) ->
       if !ValueValidator.isPresent(name)
@@ -74,3 +77,8 @@
       if !ValueValidator.isPresent(hourlyRate)
         console.warn "Hourly Rate is not present!"
         @errors.push {name: @HOURLY_RATE_ERROR_MESSAGE}
+
+    validateStartDate: (startDate) ->
+      if !ValueValidator.isPresent(startDate)
+        console.warn "Start date is not present!"
+        @errors.push {name: @START_DATE_ERROR_MESSAGE}
