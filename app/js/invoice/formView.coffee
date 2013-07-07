@@ -9,29 +9,42 @@
     initialize: ->
       @errors = []
       @API_KEY_INPUT = "input[name='apiKey']"
+      @PASSWORD_INPUT = "input[name='password']"
+      @NAME_INPUT = "input[name='togglrName']"
+      @HOURLY_RATE_INPUT = "input[name='hourlyRate']"
+      @START_DATE_INPUT = "input[name='startDate']"
+      @END_DATE_INPUT = "input[name='endDate']"
       @API_KEY_ERROR_MESSAGE = 'Please provide your API Key!'
+      @NAME_ERROR_MESSAGE = 'Please provide a name!'
 
     submitRequest: (domEvent)->
       domEvent.preventDefault()
       form = $(domEvent.currentTarget)
-      credentials =
-        apiKey: 	form.find(@API_KEY_INPUT).val(),
-        password:	form.find("input[name='password']").val(),
-        name:     form.find("input[name='togglrName']").val()
-      dates = {startDate:	@getStartDate(form), endDate: @getEndDate(form)}
-      hourlyRate = form.find("input[name='hourlyRate']").val()
-      @validateApiKey credentials.apiKey
+      credentials = @_getCredentials(form)
+      dates = @_getDates(form)
+      hourlyRate = form.find(@HOURLY_RATE_INPUT).val()
+      @validateForm credentials
       if _.isEmpty(@errors)
         @getFromToggl credentials, dates, hourlyRate
       else
         errorMessages = new App.AlertMessages.Models.Messages(@errors)
         App.execute "messages:display", errorMessages
-#      
+
+    _getCredentials: (form) ->
+      credentials =
+        apiKey: 	form.find(@API_KEY_INPUT).val(),
+        password:	form.find(@PASSWORD_INPUT).val(),
+        name:     form.find(@NAME_INPUT).val()
+      credentials
+
+    _getDates: (form) ->
+      {startDate:	@getStartDate(form), endDate: @getEndDate(form)}
+
     getStartDate: (form) ->
-      form.find("input[name='startDate']").val()
+      form.find(@START_DATE_INPUT).val()
 
     getEndDate: (form) ->
-      form.find("input[name='endDate']").val()
+      form.find(@END_DATE_INPUT).val()
 
     getFromToggl: (credentials, dates, hourlyRate) ->
       options =
@@ -40,10 +53,18 @@
         hourlyRate: hourlyRate
       App.execute "timeEntries:requestData", options
 
+    validateForm: (credentials) ->
+      @errors = []
+      @validateApiKey credentials.apiKey
+      @validateName credentials.name
+
+    validateName: (name) ->
+      if !ValueValidator.isPresent(name)
+        console.warn "Name is not present!"
+        @errors.push {name: @NAME_ERROR_MESSAGE}
+
     validateApiKey: (apiKey)->
       @errors = []
       if !ValueValidator.isPresent(apiKey)
         console.warn "API Key is not present!"
         @errors.push {name: @API_KEY_ERROR_MESSAGE}
-
-      @errors
