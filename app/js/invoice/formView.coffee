@@ -16,6 +16,7 @@
       @END_DATE_INPUT = "input[name='endDate']"
       @API_KEY_ERROR_MESSAGE = 'Please provide your API Key!'
       @NAME_ERROR_MESSAGE = 'Please provide a name!'
+      @HOURLY_RATE_ERROR_MESSAGE = 'Please provide an hourly rate!'
 
     submitRequest: (domEvent)->
       domEvent.preventDefault()
@@ -53,10 +54,11 @@
         hourlyRate: hourlyRate
       App.execute "timeEntries:requestData", options
 
-    validateForm: (credentials) ->
+    validateForm: (credentials, hourlyRate) ->
       @errors = []
       @validateApiKey credentials.apiKey
       @validateName credentials.name
+      @validateHourlyRate hourlyRate
 
     validateName: (name) ->
       if !ValueValidator.isPresent(name)
@@ -64,7 +66,11 @@
         @errors.push {name: @NAME_ERROR_MESSAGE}
 
     validateApiKey: (apiKey)->
-      @errors = []
       if !ValueValidator.isPresent(apiKey)
         console.warn "API Key is not present!"
         @errors.push {name: @API_KEY_ERROR_MESSAGE}
+
+    validateHourlyRate: (hourlyRate) ->
+      if !ValueValidator.isPresent(hourlyRate)
+        console.warn "Hourly Rate is not present!"
+        @errors.push {name: @HOURLY_RATE_ERROR_MESSAGE}
