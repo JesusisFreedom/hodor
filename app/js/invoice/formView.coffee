@@ -18,7 +18,7 @@
       @NAME_ERROR_MESSAGE = 'Please provide a name!'
       @HOURLY_RATE_ERROR_MESSAGE = 'Please provide an hourly rate!'
       @START_DATE_ERROR_MESSAGE = 'Please provide a valid start date!'
-      @END_DATE_ERROR_MESSAGE = 'Please provide an end date!'
+      @END_DATE_ERROR_MESSAGE = 'Please provide a valid end date!'
 
     submitRequest: (domEvent)->
       domEvent.preventDefault()
@@ -61,7 +61,8 @@
       @validateApiKey credentials.apiKey
       @validateName credentials.name
       @validateHourlyRate hourlyRate
-      @validateStartDate dates.startDate
+      @validateDate dates.startDate, @START_DATE_ERROR_MESSAGE
+      @validateDate dates.endDate, @END_DATE_ERROR_MESSAGE
 
     validateName: (name) ->
       if !ValueValidator.isPresent(name)
@@ -78,10 +79,10 @@
         console.warn "Hourly Rate is not present!"
         @errors.push {name: @HOURLY_RATE_ERROR_MESSAGE}
 
-    validateStartDate: (startDate) ->
-      if !ValueValidator.isPresent(startDate) || !@_isValidDate(startDate)
-        console.warn "Start date is not valid!"
-        @errors.push {name: @START_DATE_ERROR_MESSAGE}
+    validateDate: (date, errorMessage) ->
+      if !ValueValidator.isPresent(date) || !@_isValidDate(date)
+        console.warn errorMessage
+        @errors.push {name: errorMessage}
 
     _isValidDate: (date) ->
       moment(date, 'DD-MM-YYYY').isValid()
