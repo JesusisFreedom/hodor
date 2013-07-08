@@ -5,10 +5,11 @@
       @region = options.region
       @listenForMessages()
       @show @createMessagesView(null)
+      @_messagesView.$el.hide()
 
     listenForMessages: ->
       App.commands.setHandler "messages:display", (messageCollection) =>
-        console.log "region: ", @region
+        @_messagesView.$el.show()
         @getMessagesView(messageCollection).render()
 
     getMessagesView: (messagesCollection) ->

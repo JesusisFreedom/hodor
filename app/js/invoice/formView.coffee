@@ -19,6 +19,7 @@
       @HOURLY_RATE_ERROR_MESSAGE = 'Please provide an hourly rate!'
       @START_DATE_ERROR_MESSAGE = 'Please provide a valid start date!'
       @END_DATE_ERROR_MESSAGE = 'Please provide a valid end date!'
+      @END_DATE_AFTER_START_DATE_MESSAGE = 'End date has to be after start date!'
 
     submitRequest: (domEvent)->
       domEvent.preventDefault()
@@ -62,7 +63,7 @@
       @validateName credentials.name
       @validateHourlyRate hourlyRate
       @validateDate dates.startDate, @START_DATE_ERROR_MESSAGE
-      @validateDate dates.endDate, @END_DATE_ERROR_MESSAGE
+      @validateDates dates
 
     validateName: (name) ->
       if !ValueValidator.isPresent(name)
@@ -83,6 +84,15 @@
       if !ValueValidator.isPresent(date) || !@_isValidDate(date)
         console.warn errorMessage
         @errors.push {name: errorMessage}
+        return false
+      return true
+
+    validateDates: (dates) ->
+      if @validateDate(dates.startDate, @START_DATE_ERROR_MESSAGE) && @validateDate(dates.endDate, @END_DATE_ERROR_MESSAGE)
+        console.log "Check that end date is not before start date"
+        if moment(dates.endDate, 'DD-MM-YYYY').dayOfYear() < moment(dates.startDate, 'DD-MM-YYYY').dayOfYear()
+          console.warn "End date has to be after start date."
+          @errors.push {name: @END_DATE_AFTER_START_DATE_MESSAGE}
 
     _isValidDate: (date) ->
       moment(date, 'DD-MM-YYYY').isValid()
